@@ -53,10 +53,12 @@ public class UserServiceImpl implements UserService {
 	    
 		log.info("Verifying password for user {}", user.getUsername());
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		Optional<User> opt = userRepository.findByUsernamePassword(user.getUsername(), user.getPassword());
+		Optional<User> opt = userRepository.findByUsername(user.getUsername());
 		if (opt.isPresent()) {
-	        log.info("Credentials are valid {}", user.getUsername());
-		    return UserDTO.convert(opt.get());
+		    if (passwordEncoder.matches(user.getPassword(), opt.get().getPassword())) {
+    	        log.info("Credentials are valid {}", user.getUsername());
+    		    return UserDTO.convert(opt.get());
+		    }
 		}
         log.info("Invalid credentials", user.getUsername());
 		return UserDTO.convert(HttpStatus.NOT_FOUND.value(), 
@@ -82,5 +84,14 @@ public class UserServiceImpl implements UserService {
 
         User res = userRepository.save(entity);
         return UserDTO.convert(res);
+    }
+    
+    public static void main(String []args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10, new SecureRandom());
+        String password1 = encoder.encode("sistema123");
+        String password2 = encoder.encode("sistema123");
+        System.out.println("sistema123 - " + password1 + " - " + encoder.matches("sistema123", password1));
+        System.out.println("sistema123 - " + password2 + " - " + encoder.matches("sistema123", password2));
+        System.out.println(new BCryptPasswordEncoder(10, new SecureRandom()).encode("sistema123"));
     }
 }

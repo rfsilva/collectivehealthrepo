@@ -30,7 +30,7 @@ public class UserServiceTest {
     
     @Test
     public void authenticateUserService() {
-        Mockito.doReturn(Optional.ofNullable(null)).when(userRepository).findByUsernamePassword(Mockito.anyString(), Mockito.anyString());
+        Mockito.doReturn(Optional.ofNullable(null)).when(userRepository).findByUsername(Mockito.anyString());
         UserService userService = new UserServiceImpl(userRepository);
         UserDTO userDTO = userService.authenticate(UserForm.builder().username("abcde").password("12345").build());
         assertThat(userDTO.hasErrors()).isTrue();

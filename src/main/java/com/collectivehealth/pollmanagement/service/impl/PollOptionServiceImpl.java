@@ -137,6 +137,14 @@ public class PollOptionServiceImpl implements PollOptionService {
             user = userOpt.get();
         }
         
+        if (user != null && user.getId() != null) {
+            Optional<PollUser> opt = pollUserRepository.findByPollUser(poll.getId(), user.getId());
+            if (opt.isPresent()) {
+                log.info("Duplicate answer by same user: {}", user.getId());
+                return PollOptionDTO.convert(HttpStatus.BAD_REQUEST.value(), 
+                        MessageManager.getMessage(MessageConstants.DUPLICATE_USER_RESPONSE, poll.getId()));
+            }
+        }
         pollOption.setTotalVotes(pollOption.getTotalVotes() + 1);
         pollOptionRepository.save(pollOption);
         

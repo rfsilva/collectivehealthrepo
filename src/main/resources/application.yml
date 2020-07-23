@@ -3,19 +3,23 @@ spring:
     name: poll-management-api
 
   datasource:
-    url: jdbc:mysql://localhost:3306/poll_schema?useTimezone=true&serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: sistema123
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
 
   jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: create
+    show-sql: true
+    
+  h2.console:
+    enabled: true
+    path: /h2
 
   flyway:
-    schemas: poll_schema
-    enabled: false
+    schemas: testdb
+    enabled: true
     baseline-on-migrate: true
     baseline-version: 0
 

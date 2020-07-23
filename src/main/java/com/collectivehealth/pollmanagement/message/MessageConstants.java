@@ -14,4 +14,5 @@ public final class MessageConstants {
     public static final String OPTIONS_DIFFERENT_POLL = "options-different-poll";
     public static final String USER_ALREADY_ASSOCIATED_TO_POLL = "user-already-associated-to-poll";
     public static final String INVALID_POLL_USER_ASSOCIATION = "invalid-poll-user-association";
+    public static final String DUPLICATE_USER_RESPONSE = "duplicate-user-response";
 }
